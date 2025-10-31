@@ -1,0 +1,51 @@
+{
+  "name": "zipzap-api-v2",
+  "version": "2.0.0",
+  "description": "A modern REST API template using Hono, Mongoose, and Bun",
+  "author": "Mehedi <admin@promehedi.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ProMehedi/zipzap-api-v2"
+  },
+  "scripts": {
+    "start": "bun run --hot server.ts",
+    "dev": "bun run --hot server.ts",
+    "dev:all": "concurrently \"bun run --hot server.ts\" \"bun run --hot websocket-server.ts\"",
+    "websocket": "bun run --hot websocket-server.ts",
+    "typecheck": "tsc --noEmit",
+    "setup:superadmin": "bun run scripts/setupSuperAdmin.ts"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.7.2",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.18.1",
+    "hono": "^4.7.4",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.12.1",
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0",
+    "ws": "^8.18.3",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/mongoose": "^5.11.97",
+    "@types/winston": "^2.4.4"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "keywords": [
+    "bun",
+    "hono",
+    "mongodb",
+    "mongoose",
+    "typescript",
+    "api",
+    "rest",
+    "starter",
+    "template"
+  ]
+}

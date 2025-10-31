@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .connecting {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .log {
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>WebSocket Connection Test</h1>
+
+    <div id="status" class="status disconnected">Disconnected</div>
+
+    <button onclick="connect()">Connect</button>
+    <button onclick="disconnect()">Disconnect</button>
+    <button onclick="sendTest()">Send Test Message</button>
+    <button onclick="clearLog()">Clear Log</button>
+
+    <h3>Connection Log:</h3>
+    <div id="log" class="log"></div>
+
+    <script>
+        let ws = null;
+        const statusDiv = document.getElementById('status');
+        const logDiv = document.getElementById('log');
+
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function updateStatus(status, className) {
+            statusDiv.textContent = status;
+            statusDiv.className = `status ${className}`;
+        }
+
+        function connect() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                log('Already connected');
+                return;
+            }
+
+            const wsUrl = 'ws://localhost:8000/ws';
+            log(`Attempting to connect to ${wsUrl}`);
+            updateStatus('Connecting...', 'connecting');
+
+            try {
+                ws = new WebSocket(wsUrl);
+
+                ws.onopen = function (event) {
+                    log('WebSocket connection opened');
+                    updateStatus('Connected', 'connected');
+
+                    // Send authentication message
+                    const authMessage = {
+                        type: 'authenticate',
+                        data: {
+                            userId: 'test-user',
+                            sessionId: 'test-session-' + Date.now()
+                        }
+                    };
+                    ws.send(JSON.stringify(authMessage));
+                    log('Sent authentication message:', authMessage);
+                };
+
+                ws.onmessage = function (event) {
+                    log(`Received message: ${event.data}`);
+                };
+
+                ws.onclose = function (event) {
+                    log(`WebSocket connection closed: ${event.code} ${event.reason}`);
+                    updateStatus('Disconnected', 'disconnected');
+                };
+
+                ws.onerror = function (error) {
+                    log(`WebSocket error: ${error}`);
+                    updateStatus('Error', 'disconnected');
+                };
+
+            } catch (error) {
+                log(`Error creating WebSocket: ${error}`);
+                updateStatus('Error', 'disconnected');
+            }
+        }
+
+        function disconnect() {
+            if (ws) {
+                ws.close();
+                log('Disconnect requested');
+            }
+        }
+
+        function sendTest() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const testMessage = {
+                    type: 'test',
+                    data: {
+                        message: 'Hello from test client',
+                        timestamp: new Date().toISOString()
+                    }
+                };
+                ws.send(JSON.stringify(testMessage));
+                log('Sent test message');
+            } else {
+                log('Not connected - cannot send message');
+            }
+        }
+
+        function clearLog() {
+            logDiv.innerHTML = '';
+        }
+
+        // Auto-connect on page load
+        window.onload = function () {
+            log('Page loaded - auto-connecting...');
+            connect();
+        };
+    </script>
+</body>
+
+</html>

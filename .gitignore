@@ -1,0 +1,17 @@
+# deps
+node_modules/
+
+# environment file
+.env*
+!*.env.example
+
+# logs
+.DS_Store
+logs/
+*.log
+
+# uploads
+uploads/
+
+# migration
+migration/
