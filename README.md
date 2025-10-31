@@ -237,7 +237,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
+  https://905local.com/
 
-Mehedi Hasan - [admin@promehedi.com](mailto:admin@promehedi.com)
 
-Project Link: [https://github.com/ProMehedi/bun-hono-api-starter](https://github.com/ProMehedi/bun-hono-api-starter)
