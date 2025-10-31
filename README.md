@@ -105,8 +105,8 @@ POST /api/v1/users
 
 ```json
 {
-  "name": "Mehedi Hasan",
-  "email": "mehedi@example.com",
+  "name": "Ajay Shrivas",
+  "email": "ajay@example.com",
   "password": "123456"
 }
 ```
@@ -119,7 +119,7 @@ POST /api/v1/users/login
 
 ```json
 {
-  "email": "mehedi@example.com",
+  "email": "ajay@example.com",
   "password": "123456"
 }
 ```
@@ -238,5 +238,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
   https://905local.com/
+
 
 
